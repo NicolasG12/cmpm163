@@ -40,21 +40,24 @@ void main()
 	// 1. The unit-length interpolated vertex normal (the vector n).
 	float3 n = normalize(vertexNormal);
 	// 2. The unit-length direction to the light source (the vector l).
-	float lvec = lightPosition.xyz - vertexPosition;
-	float3 l = normalize(lvec);
+	float3 ldir = lightPosition.xyz - vertexPosition;
+	float3 l = normalize(ldir);
 	// 3. The unit-length direction to the camera/viewer (the vector v).
 	float3 v = normalize(cameraPosition.xyz - vertexPosition);
 	// 4. The unit-length halfway direction (the vector h).
 	float3 h = normalize(l + v);
 	// 5. The squared distance between the interopolated vertex position and the light source.
-	float l2 = dot(lvec, lvec);
+	float l2 = dot(ldir, ldir);
 	// 6. The light attenuation function given by Equation (8.7) for k = 2. The attenConst vector already contains the values shown in Listing 8.2.
-	float a = 
+
+	float a = saturate(exp(l2 * attenConst.x) * attenConst.y - attenConst.z);
 	// 7. The combined diffuse and specular shading given by Equation (7.26). Do not add ambient light. Assume the albedo rho is 1.0.
 	//    You may multiply by 0.3183, which is approximately 1/pi, to account for division by pi in the diffuse component.
-	//
+	float3 diffuse = 0.3813 * diffuseColor * saturate(dot(n, l));
+	float3 specular = specularColor * pow(saturate(dot(n, h)), specularPower);
+	float3 ds = (diffuse + specular) * lightColor.xyz;
 	// Output the product of the final diffuse/specular color and the attenuated light color to fragmentColor.xyz, replacing the line below.
 
 
-	fragmentColor.xyz = float3(0.0, 0.0, 0.0);
+	fragmentColor.xyz = ds * a;
 }
