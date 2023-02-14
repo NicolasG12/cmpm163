@@ -154,8 +154,10 @@ bool FrustumCamera::BoxVisible(const Transform4D& transform, const Vector3D& siz
 {
 	// #HW2 -- Add code here that determines whether a box is visible to the camera.
 	// The transform parameter is the object-to-world transformation matrix for the box.
+	Vector3D h = { size.x / 2, size.y / 2, size.z / 2 };
+	Point3D p = transform.GetTranslation();
 	for (auto g : worldFrustumPlane) {
-		float rg = Fabs(Dot(g * (size.x / 2), transform.matrix[0])) + Fabs(Dot(g * (size.y / 2), transform[1])) + Fabs(Dot(g * (size.z / 2), transform[2]));
+		float rg = Fabs(Dot(g * h.x, transform[0])) + Fabs(Dot(g * h.y, transform[1])) + Fabs(Dot(g * h.z, transform[2]));
 	}
 
 	return (true);
