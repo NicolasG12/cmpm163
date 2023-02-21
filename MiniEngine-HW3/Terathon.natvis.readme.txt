@@ -1,0 +1,5 @@
+The file "Terathon.natvis" is a native visualizer file that works with the Visual Studio debugger. You can copy it to the following location on your computer:
+
+Documents/Visual Studio 2022/Visualizers/
+
+This gives the debugger some extra information about the math classes used in the mini-engine so the data is easier to see in the debugger. It's not required, but it could be very helpful.
