@@ -1193,10 +1193,19 @@ void WorldManager::ConstructNormalMap(const Color4U *heightMap, Color2S *normalM
 			int32 xp1 = (x + 1) & (width - 1), xm1 = (x - 1) & (width - 1);
 			
 
-			float dx = ((centerRow[xp1].red / 255) - (centerRow[xm1].red / 255)) * 0.5F * scale;
-			float dy = ((lowerRow[x].red / 255) - (upperRow[x].red / 255)) * 0.5F * scale;
+			float dx = (((centerRow[xp1].red) - (centerRow[xm1].red)) * 0.5F * scale) / 255;
+			float dy = (((lowerRow[x].red ) - (upperRow[x].red )) * 0.5F * scale) / 255;
+			
+			Vector3D ux = Vector3D(1, 0, dx);
+			Vector3D uy = Vector3D(0, 1, dy);
+
+			Vector3D m = Cross(ux, uy);
+			m /= Magnitude(m);
+
+			normalMap[x].Set(m.x, m.y);
 
 		}
+		normalMap += width;
 	}
 }
 
