@@ -1202,7 +1202,7 @@ void WorldManager::ConstructNormalMap(const Color4U *heightMap, Color2S *normalM
 			Vector3D m = Cross(ux, uy);
 			m /= Magnitude(m);
 
-			normalMap[x].Set(m.x, m.y);
+			normalMap[x].Set(m.x * 127.0F, m.y * 127.0F);
 
 		}
 		normalMap += width;

@@ -44,6 +44,11 @@ void main()
 	float specularPower = fparam[1].w;
 
 	float3 normal = normalize(vertexNormal);
+	float2 nt = texture(normalTexture, vertexTexcoord).xy;
+	float3 m = float3(nt, sqrt(1.0 - nt.x * nt.x - nt.y * nt.y));
+	float3 t = normalize(vertexTangent.xyz - normal * dot(vertexTangent.xyz, normal));
+	float3 b = vertexTangent.w * (cross(normal, vertexTangent.xyz));
+	m = float3(dot(t, m), dot(b, m), dot(normal, m));
 
 	// Calculate direction to light, get its squared length, and then normalize it.
 
@@ -68,14 +73,15 @@ void main()
 
 	// Calculate Lambertian diffuse factor sat(n • l) / pi.
 
-	float3 diff = diffuseColor * clamp(dot(normal, ldir), 0.0, 1.0) * 0.3183;
+	float3 diff = diffuseColor * clamp(dot(m, ldir), 0.0, 1.0) * 0.3183;
 
 	// Calculate specular factor sat(n • h)^alpha.
 
-	float3 spec = specularColor * (pow(saturate(dot(normal, hdir)), specularPower) * softening);
+	float3 spec = specularColor * (pow(saturate(dot(m, hdir)), specularPower) * softening);
 
 	// Multiply combined diffse and specular color by attenuated light color.
 
-	fragmentColor.xyz = (diff + spec) * lightColor.xyz * atten;
+	//fragmentColor.xyz = (diff + spec) * lightColor.xyz * atten;
+	fragmentColor.xyz = m;
 	fragmentColor.w = 0.0;
 }
