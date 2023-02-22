@@ -1185,13 +1185,16 @@ void WorldManager::ConstructNormalMap(const Color4U *heightMap, Color2S *normalM
 	for (int32 y = 0; y < height; y++) {
 		int32 yp1 = (y + 1) & (height - 1), ym1 = (y - 1) & (height - 1);
 
-		const Color4U *centerRow = heightMap + height * y;
-		const Color4U *upperRow = heightMap + height * yp1;
-		const Color4U *lowerRow = heightMap + height * ym1;
+		const Color4U *centerRow = heightMap + y * width;
+		const Color4U *upperRow = heightMap + yp1 * width;
+		const Color4U *lowerRow = heightMap + ym1 * width;
 
 		for (int x = 0; x < width; x++) {
 			int32 xp1 = (x + 1) & (width - 1), xm1 = (x - 1) & (width - 1);
+			
 
+			float dx = ((centerRow[xp1].red / 255) - (centerRow[xm1].red / 255)) * 0.5F * scale;
+			float dy = ((lowerRow[x].red / 255) - (upperRow[x].red / 255)) * 0.5F * scale;
 
 		}
 	}
