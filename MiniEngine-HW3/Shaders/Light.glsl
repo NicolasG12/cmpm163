@@ -48,7 +48,7 @@ void main()
 	float3 m = float3(nt, sqrt(1.0 - nt.x * nt.x - nt.y * nt.y));
 	float3 t = normalize(vertexTangent.xyz - normal * dot(vertexTangent.xyz, normal));
 	float3 b = vertexTangent.w * (cross(normal, vertexTangent.xyz));
-	m = float3(dot(t, m), dot(b, m), dot(normal, m));
+	m = m.x * t + m.y * b + m.z * normal;
 
 	// Calculate direction to light, get its squared length, and then normalize it.
 
@@ -81,7 +81,7 @@ void main()
 
 	// Multiply combined diffse and specular color by attenuated light color.
 
-	//fragmentColor.xyz = (diff + spec) * lightColor.xyz * atten;
-	fragmentColor.xyz = m;
+	fragmentColor.xyz = (diff + spec) * lightColor.xyz * atten;
+	//fragmentColor.xyz = m;
 	fragmentColor.w = 0.0;
 }
