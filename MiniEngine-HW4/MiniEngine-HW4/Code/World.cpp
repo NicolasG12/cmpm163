@@ -1274,7 +1274,7 @@ Vector2D WorldManager::CalculateParallaxScale(int32 width, int32 height, float s
 void WorldManager::CalculateFogParams(UniversalParams *params)
 {
 	// #HW4 -- Add code here to establish the fog plane, color, and other parameters in the UniversalParams structure.
-	Plane f = fogNode->GetWorldTransform().row2;
+	Plane f = fogNode->GetInverseWorldTransform().row2;
 	params->fogPlane = f;
 	params->fogColor = fogNode->fogColor;
 	float fc = Dot(f, cameraNode->GetWorldPosition());

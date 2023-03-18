@@ -28,7 +28,7 @@ out float4 fragmentColor;
 float3 ApplyHalfspaceFog(float3 shadedColor, float3 v)
 {
 	// #HW4 -- Add code here to calculate half-space fog for the ambient pass.
-	float fp = dot(fogPlane.xyz, vertexPosition);
+	float fp = dot(fogPlane.xyz, vertexPosition) + fogPlane.w;
 	float u1 = fogParams.y * (fogParams.z + fp);
 	float u2 = fp * fogParams.w;
 	float fv = dot(fogPlane.xyz, v);
